@@ -27,3 +27,50 @@
 .modelButton:hover{
     background-color: rgba(255, 255, 255, 0.05);
 }
+
+.row.leftSide{
+    width: 10%;
+}
+
+/* Copied from: https://stackoverflow.com/questions/826782/how-to-disable-text-selection-highlighting */
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+}
+
+.disableEvents{
+    pointer-events: none;
+}
+
+.enableEvents{
+    pointer-events: all;
+}
+
+.settingsButton{
+    border: none;
+    padding: 10px;
+    margin-bottom: 10px;
+    color: rgb(211, 211, 211);
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.settingsButton.main{
+    border-bottom: solid rgb(116, 1, 1);
+}
+
+.settingsButton.effect{
+    border-bottom: solid rgb(1, 112, 116);
+}
+
+.settingsButton:hover{
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+.aboutPageLink{
+    text-decoration: none;
+}

@@ -8,7 +8,7 @@ const actions = []; //Actions array triggered by play button
 function init(){
 
     //Setup switch model callbacks for buttons
-    //Only do this on original init, otherwise things will be registered twice
+    //Only do this on original init, otherwise things will be registered more than once
     const model1Button = document.getElementById("model1");
     model1Button.addEventListener('click', function(){
         load('ship.glb');
@@ -16,7 +16,7 @@ function init(){
 
     const model2Button = document.getElementById("model2");
     model2Button.addEventListener('click', function(){
-        load('creature.glb');
+        load('skull.glb');
     })
 
     const model3Button = document.getElementById("model3");
@@ -148,6 +148,6 @@ function setWireframe(enable)
 //Helper functions
 function isRealValue(obj)
 {
- return obj && obj !== 'null' && obj !== 'undefined';
+    return obj && obj !== 'null' && obj !== 'undefined';
 }
 
