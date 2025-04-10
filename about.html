@@ -12,9 +12,89 @@
     <div class="container text-center">
       <h1>About Page</h1>
 
-      Website designed to demonstrate some fundamental shader techniques.
-      
-      <div class="fixed-bottom"><a href="index.html" class="aboutPageLink">Return</a></div>
+      My website is designed to demonstrate some fundamental shader techniques. This is done through letting users apply various shader effects onto three models that I have created.
+
+      <div class="aboutPageMainText">
+        <!-- 3D MODELS SECTION -->
+        <h2  class="aboutPageSubTitles">3D Models</h2>
+        <h3>Spaceship</h3>
+        The first model is based generally on popular notions of flying saucers but also specifcally on one particular example. In the MMO, "Final Fantasy XIV" there is a sequence of comedic questlines which includes an 
+        encounter with aliens. They fly the ship pictured below.
+
+        <div class="aboutPageCenter">
+          <img class = "aboutPageImage" src="public/pupus-ufo.jpg" alt="A UFO from FFXIV">
+          <div>
+            <a href="https://www.thegamer.com/final-fantasy-14-xiv-ufo-mount-hildibrand-quest-guide/">Image Source</a>
+          </div>
+        </div>  
+
+        The metalic texture of the hull and the emissive thrusters on the bottom are reflected in my model. My website includes an animation for each model and for the UFO it involves the opening of the dome.
+        Inside is a simplistic control room, a key piece of feedback I recieved (that I have yet to act upon) was to give this an animated element or some more interesting colours.
+
+        <h3>Skull</h3>
+        The Skull model draws inspiration from two primary sources, video games "Devil Daggers" and "Waltz of the Wizard". "Devil Daggers" uses a very pixelated and low poly style, one which has been mimicked in my model.
+        
+        <div class="aboutPageCenter">
+          <img class = "aboutPageImage" src="public/devilDaggers.png" alt="One of the types of Skull enemies from Devil Daggers">
+          <div>
+            <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=692059731">Image Source</a>
+          </div>
+        </div>  
+        
+        Unlike my other models (which use a mix of mostly singular colours and some textures), the Skull uses only textures (made by me in a program called Aseprite), as a result this was by far the hardest model to make. It took
+        longer than both other models combined by a significant margin (around 6 to 8 hours, including the time spent learning how to properly create useful UVs).
+
+        The animation was added retroactively, when I made the model I had no specific animation in mind. Originally the model had more pixelated eyes, that were part of the texture, which I removed to add the more cartoony eyes
+        inspired by "Waltz of the Wizard". This game features a skull character that acts as an assistant, he is pictured below.
+
+        <div class="aboutPageCenter">
+          <img class = "aboutPageImage" src="public/waltz.jpg" alt="Skully from Waltz of the Wizard">
+          <div>
+            <a href="https://x.com/AldinDynamics/status/1899872625725497817">Image Source</a>
+          </div>
+        </div> 
+
+        <h3>Totoro</h3>
+        The final model is, of course, based on the famous movie character but more specifically, a small plush of him I've owned for several years, pictured below.
+
+        <div class="aboutPageCenter">
+          <img class = "aboutPageImage" src="public/totoro.jpg" alt="My Totoro plush">
+          <div>
+            <a>(Photo taken by me)</a>
+          </div>
+        </div> 
+
+        Much like the spaceship, this model only uses a single texture, in this case for the triangle shapes on the belly. Its animation involves a simplistic wave combined with a couple extra details (ears twitching, eyes blinking)
+        to make it look cuter/more lifelike.
+
+        <!-- DESIGN SECTION -->
+        <h2 class="aboutPageSubTitles">Design</h2>
+
+        I used bootstrap to handle the layout of my html elements. A canvas is placed behind everything, set to fill the full resolution of the window, every other element is then placed on top of that. This unintentionally
+        created a usability issue as divs naturally blocked mouse events to the canvas, even if they were invisible. The issue was quickly fixed after it was revealed by user testing,
+        however, the solution the elements that need to handle mouse events be defined explicitly. 
+        <br>        <br>
+        In general, I utilize a minimalist approach to design. The only colour in the website is used to differentiate and highlight the types of buttons. My "About" link is placed at the bottom of the page, intentionally removed
+        from the design (and placement) of the other buttons.
+        <br>        <br>
+        My scene is lit using one directional light and one ambient light (both non-coloured). There are buttons to play the animation for a given model, set the current model to wireframe mode and then buttons for all the listed
+        effects. At the very top of the page is a model switching navigation bar.
+
+
+        <!-- INTEGRATION SECTION -->
+        <h2 class="aboutPageSubTitles">Integration</h2>
+
+        <!-- INTERACTION SECTION -->
+        <h2 class="aboutPageSubTitles">Interaction</h2>
+
+        <!-- TESTING SECTION -->
+        <h2 class="aboutPageSubTitles">Testing</h2>
+
+        <!-- Add some padding so the return button doesn't hide any text -->
+        <div class="aboutPageEndPadding"></div>
+      </div>
+
+      <div class="fixed-bottom aboutPageReturn"><a href="index.html" class="aboutPageLink">Return</a></div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

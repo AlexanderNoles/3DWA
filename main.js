@@ -1,8 +1,25 @@
 import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import GUI from 'three/examples/jsm/libs/lil-gui.module.min.js';
 
-var scene, camera, clock, renderer, mixer, isWireframe;
+
+/* Copied (with bug fix modification) from https://threejs.org/manual/#en/lights*/
+class ColorGUIHelper {
+    constructor(object, prop) {
+      this.object = object;
+      this.prop = prop;
+    }
+    get value() {
+      return this.object[this.prop].getHexString();
+    }
+
+    set value(hexString) {
+      this.object[this.prop].set(hexString);
+    }
+}
+
+var scene, camera, clock, renderer, mixer, isWireframe, gui;
 const actions = []; //Actions array triggered by play button
 
 function init(){
@@ -53,10 +70,15 @@ function load(modelName){
     scene = new THREE.Scene();
 
     var startPos = new THREE.Vector3(0, 0, 10);
+    var lightPos = new THREE.Vector3(-1, 1, 0);
 
     //Maintain camera position across model loading
     if(isRealValue(camera)){
         startPos = camera.position;
+
+        //Normalize and match standard zoom, only maintain angle
+        startPos.normalize();
+        startPos.multiplyScalar(10);
     }
 
     camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -82,8 +104,27 @@ function load(modelName){
     scene.add(ambientLight);
 
     const directionalLight = new THREE.DirectionalLight(color, 1);
-    //directionalLight.position = new THREE.Vector3(0, 1, 0);
+    //Match light pos
+    directionalLight.position.x = lightPos.x;
+    directionalLight.position.y = lightPos.y;
+    directionalLight.position.z = lightPos.z;
     scene.add(directionalLight)
+
+    //Create light editing GUI
+    if(isRealValue(gui)){
+        gui.destroy();
+    }
+
+    gui = new GUI();
+    const ambientFolder = gui.addFolder("Ambient Light");
+    ambientFolder.addColor(new ColorGUIHelper(ambientLight, 'color'), 'value').name('color');
+    ambientFolder.add(ambientLight, 'intensity', 0.1, 1, 0.01);
+    ambientFolder.open();
+
+    const directionalFolder = gui.addFolder("Directional Light");
+    directionalFolder.addColor(new ColorGUIHelper(directionalLight, 'color'), 'value').name('color');
+    directionalFolder.add(directionalLight, 'intensity', 0.1, 5, 0.01);
+    directionalFolder.open();
 
     //By default have wireframe mode disabled
     setWireframe(false);
@@ -150,4 +191,3 @@ function isRealValue(obj)
 {
     return obj && obj !== 'null' && obj !== 'undefined';
 }
-

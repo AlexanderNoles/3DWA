@@ -51,6 +51,11 @@
     pointer-events: all;
 }
 
+/* Force lil-gui to accept pointer-events */
+.lil-gui{
+    pointer-events: all;
+}
+
 .settingsButton{
     border: none;
     padding: 10px;
@@ -73,4 +78,30 @@
 
 .aboutPageLink{
     text-decoration: none;
+}
+
+.aboutPageMainText{
+    text-align: left;
+}
+
+.aboutPageCenter{
+    text-align:center;
+    margin: 10px;
+}
+
+.aboutPageImage{
+    max-width: 400px;
+    max-height: 400px;
+}
+
+.aboutPageReturn{
+    background-color: black;
+}
+
+.aboutPageEndPadding{
+    margin-top: 50px;
+}
+
+.aboutPageSubTitles{
+    text-decoration: underline;
 }
