@@ -27,7 +27,7 @@ class ColorGUIHelper {
     }
 }
 
-var scene, camera, clock, renderer, mixer, isWireframe, gui, composer;
+var scene, camera, clock, renderer, mixer, isWireframe, gui, composer, activePassIndex;
 const actions = []; //Actions array triggered by play button
 
 function init(){
@@ -47,6 +47,14 @@ function init(){
     const model3Button = document.getElementById("model3");
     model3Button.addEventListener('click', function(){
         load('creature.glb');
+    })
+
+    //Shader switching buttons
+    //Needs to match the number of passes
+    //If we have one post-proceess pass only look for first button
+    const passButton1 = document.getElementById("pass1");
+    passButton1.addEventListener('click', function(){
+        togglePass(1);
     })
 
     //Animation control buttons
@@ -72,7 +80,6 @@ function init(){
 }
 
 init();
-
 
 function load(modelName){
     scene = new THREE.Scene();
@@ -174,11 +181,48 @@ function load(modelName){
     //Add the effect passes
     //By default have them disabled
     const effectPass = new ShaderPass(GreyscaleShader);
+    effectPass.enabled = false;
     composer.addPass(effectPass);
 
     //Add an output pass
     const outputPass = new OutputPass();
     composer.addPass(outputPass);
+
+    //Currently no active shader pass
+    activePassIndex = -1;
+}
+
+//Toggle render pass function
+//Passes an index which is used to lookup into a passes array on the composer
+//Shader passes include all passes but the first (normal pass) and last (output pass)
+//Store the current active pass so we can disable it when setting a new one active
+function togglePass(newIndex)
+{
+    if(!isRealValue(composer)){
+        return 0;
+    }
+
+    if(activePassIndex != -1){
+        //Deactivate current shader pass
+        composer.passes[activePassIndex].enabled = false;
+    }
+
+    //Activate new pass
+    //If within range of shader passes...
+    if(newIndex > 0 && newIndex < (composer.passes.length-1)){
+        //...and is not pass just disabled. Inside scope of first check so we can set activePassIndex back to -1 only in appropriate cases
+
+        if(activePassIndex != newIndex)
+        {
+            composer.passes[newIndex].enabled = true;
+            //Set current active pass index
+            activePassIndex = newIndex;
+        }
+        else
+        {
+            activePassIndex = -1;
+        }
+    }
 }
 
 //Resizing
