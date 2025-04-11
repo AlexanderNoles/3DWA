@@ -1,8 +1,16 @@
 import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import GUI from 'three/examples/jsm/libs/lil-gui.module.min.js';
 
+//Post processing
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+
+import {GreyscaleShader} from '/shaders/Greyscale.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+//
 
 /* Copied (with bug fix modification) from https://threejs.org/manual/#en/lights*/
 class ColorGUIHelper {
@@ -19,7 +27,7 @@ class ColorGUIHelper {
     }
 }
 
-var scene, camera, clock, renderer, mixer, isWireframe, gui;
+var scene, camera, clock, renderer, mixer, isWireframe, gui, composer;
 const actions = []; //Actions array triggered by play button
 
 function init(){
@@ -85,9 +93,14 @@ function load(modelName){
     clock = new THREE.Clock(); //Add animation timing clock
 
     //Apply render to render canvas
+    if(isRealValue(renderer)){
+        renderer.dispose();
+    }
+
     renderer = new THREE.WebGLRenderer({antialias: true, canvas: renderCanvas});
     renderer.setSize( window.innerWidth, window.innerHeight );
     renderer.setAnimationLoop( render );
+
 
     //Setup orbital camera
     const controls = new OrbitControls(camera, renderer.domElement);
@@ -146,8 +159,26 @@ function load(modelName){
     }, undefined, function (error) {
 
       console.error(error);
-
     });
+
+    //Setup post processing
+    if(isRealValue(composer)){
+        composer.dispose();
+    }
+
+    composer = new EffectComposer(renderer);
+
+    //Add default pass
+    composer.addPass(new RenderPass(scene, camera));
+
+    //Add the effect passes
+    //By default have them disabled
+    const effectPass = new ShaderPass(GreyscaleShader);
+    composer.addPass(effectPass);
+
+    //Add an output pass
+    const outputPass = new OutputPass();
+    composer.addPass(outputPass);
 }
 
 //Resizing
@@ -157,7 +188,9 @@ function resize()
 {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
+
     renderer.setSize(window.innerWidth, window.innerHeight);
+    composer.setSize(window.innerWidth, window.innerHeight);
 }
 
 //Animation
@@ -168,7 +201,7 @@ function render()
         mixer.update(clock.getDelta());
     }
 
-    renderer.render( scene, camera );
+    composer.render();
 }
 
 //Wireframe
