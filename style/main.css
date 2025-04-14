@@ -21,7 +21,7 @@
     width: 100%;
     padding: 10px;
     color: rgb(211, 211, 211);
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgb(36, 36, 36);
 }
 
 .modelButton:hover{

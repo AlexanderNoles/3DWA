@@ -9,6 +9,8 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 
 import {GreyscaleShader} from '/shaders/Greyscale.js';
+import {PixelationShader} from '/shaders/Pixelation.js';
+
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 //
 
@@ -28,9 +30,13 @@ class ColorGUIHelper {
 }
 
 var scene, camera, clock, renderer, mixer, isWireframe, gui, composer, activePassIndex;
+var buttonClick;
 const actions = []; //Actions array triggered by play button
 
 function init(){
+
+    //Load sound effects
+    buttonClick = new Audio("ButtonClick.wav");
 
     //Setup switch model callbacks for buttons
     //Only do this on original init, otherwise things will be registered more than once
@@ -57,6 +63,11 @@ function init(){
         togglePass(1);
     })
 
+    const passButton2 = document.getElementById("pass2");
+    passButton2.addEventListener('click', function(){
+        togglePass(2);
+    })
+
     //Animation control buttons
     const playButton = document.getElementById("playBtn");
     playButton.addEventListener('click', function(){
@@ -67,21 +78,30 @@ function init(){
             action.reset();
             action.play();
             });
+        playButtonClick();
     })
 
     //Wireframe control button
     const wireframeButton = document.getElementById("wireBtn");
     wireframeButton.addEventListener('click', function(){
         setWireframe(!isWireframe);
+        playButtonClick();
     })
 
     //Default load ship
-    load('ship.glb');
+    load('ship.glb', false);
 }
 
 init();
 
-function load(modelName){
+function load(modelName, playSound = true){
+
+    //Play button click sound, unless we have been explicitly told not too
+    if (playSound)
+    {
+        playButtonClick();
+    }
+
     scene = new THREE.Scene();
 
     var startPos = new THREE.Vector3(0, 0, 10);
@@ -180,9 +200,13 @@ function load(modelName){
 
     //Add the effect passes
     //By default have them disabled
-    const effectPass = new ShaderPass(GreyscaleShader);
-    effectPass.enabled = false;
-    composer.addPass(effectPass);
+    const greyscalePass = new ShaderPass(GreyscaleShader);
+    greyscalePass.enabled = false;
+    composer.addPass(greyscalePass);
+
+    const pixelationPass = new ShaderPass(PixelationShader);
+    pixelationPass.enabled = false;
+    composer.addPass(pixelationPass);
 
     //Add an output pass
     const outputPass = new OutputPass();
@@ -201,6 +225,9 @@ function togglePass(newIndex)
     if(!isRealValue(composer)){
         return 0;
     }
+
+    //Play sound
+    playButtonClick();
 
     if(activePassIndex != -1){
         //Deactivate current shader pass
@@ -267,4 +294,16 @@ function setWireframe(enable)
 function isRealValue(obj)
 {
     return obj && obj !== 'null' && obj !== 'undefined';
+}
+
+function playButtonClick(){
+    //Want to restart if sound is already playing, so buttons always produce some feeback
+    if (buttonClick.paused) 
+    {
+        buttonClick.play();
+    }
+    else
+    {
+        buttonClick.currentTime = 0
+    }
 }

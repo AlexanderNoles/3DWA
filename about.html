@@ -67,6 +67,16 @@
         Much like the spaceship, this model only uses a single texture, in this case for the triangle shapes on the belly. Its animation involves a simplistic wave combined with a couple extra details (ears twitching, eyes blinking)
         to make it look cuter/more lifelike.
 
+        <!-- EFFECTS SECTION -->
+        <h2 class="aboutPageSubTitles">Visual Effects</h2>
+
+        The demonstratory effects I've included are listed below, alongside a brief explanation of how I believe they demonstrate shader techniques.
+        <br>
+        1. Value. Used to demonstrate the fundamental value (or average of all the colours) of a given pixel.
+        <br>
+        2. Pixelation. Used to demonstrate how you can manipulate UV coords to produce effects. In this case rounding UV coords to a cell center.
+
+
         <!-- DESIGN SECTION -->
         <h2 class="aboutPageSubTitles">Design</h2>
 
@@ -76,17 +86,21 @@
         <br>        <br>
         In general, I utilize a minimalist approach to design. The only colour in the website is used to differentiate and highlight the types of buttons. My "About" link is placed at the bottom of the page, intentionally removed
         from the design (and placement) of the other buttons.
-        <br>        <br>
-        My scene is lit using one directional light and one ambient light, both can have their colour and intensity changed by a user through a GUI. 
-        There are buttons to play the animation for a given model, set the current model to wireframe mode and then buttons for all the listed
-        effects. At the very top of the page is a model switching navigation bar.
-
 
         <!-- INTEGRATION SECTION -->
         <h2 class="aboutPageSubTitles">Integration</h2>
 
+        Alongside the models, I've also added some audio elements. All the onclick events for every button, also calls a "playButtonClick" function, to add some additional feedback for the user. This is especially important
+        for cases where effects (mostly the "Value" effect on the first two models) don't necessarily have a visible impact.
+
         <!-- INTERACTION SECTION -->
         <h2 class="aboutPageSubTitles">Interaction</h2>
+
+        To help with viewing the models, I added the "OrbitControls" addon for threejs. This provides a basic orbiting camera, controlled similarly to programs like Blender. 
+        <br>        <br>
+        My scene is lit using one directional light and one ambient light, both can have their colour and intensity changed by a user through a GUI. 
+        There are buttons to play the animation for a given model, set the current model to wireframe mode and then buttons for toggling a variety of
+        effects. At the very top of the page is a model switching navigation bar.
 
         <!-- TESTING SECTION -->
         <h2 class="aboutPageSubTitles">Testing</h2>
