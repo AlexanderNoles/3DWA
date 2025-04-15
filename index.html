@@ -3,28 +3,42 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>3DWA</title>
+    <title>3D Shader Examples</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="style/main.css" rel="stylesheet">
   </head>
   <!-- Disable events for the whole body by default and then enable events where needed. This prevents unintuitive blocking of model rotation by divs. -->
   <body class="disableEvents">
     <div class="container text-center">
-      <div class="row enableEvents">
-        <div class="col">
-          <button id = "model1" type="button" class="modelButton">Spaceship</button>
+      <div class = "row">
+        <div class = "col-flex">
+          <h1 class="mainTitle">3D Shader Examples</h1>
         </div>
-        <div class="col">
-          <button id = "model2" type="button" class="modelButton">Skull</button>
+        <div class = "col-flex">
+          <h3>Learn the Basics!</h3> 
         </div>
-        <div class="col">
-          <button id = "model3" type="button" class="modelButton">Totoro</button>
+
+        <div class = "col-flex">
+          <a href="about.html" class="aboutPageLink enableEvents">  (About) </a>
         </div>
       </div>
       <div class="row">
         <div class="col-flex">
-          <!-- Insert col to create some padding -->
-          <div>&nbsp;</div>
+          Models:
+        </div>
+        <div class="col-flex">
+          <button id = "model1" type="button" class="modelButton enableEvents">Spaceship</button>
+        </div>
+        <div class="col-flex">
+          <button id = "model2" type="button" class="modelButton enableEvents">Skull</button>
+        </div>
+        <div class="col-flex">
+          <button id = "model3" type="button" class="modelButton enableEvents">Totoro</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-flex">
+          Settings:
         </div>
         <div class="col-flex">
           <button id = "playBtn" type="button" class="settingsButton main noselect enableEvents">Play Animation</button>
@@ -43,8 +57,15 @@
         </div>
       </div>
 
-      <div class="fixed-bottom aboutPageReturn"><a href="about.html" class="aboutPageLink enableEvents"> About </a></div>
+      <div class="fixed-bottom aboutPageReturn">
+        <div class="explanation">
+          <p id="explanationText">
+          </p>
+        </div>
+      </div>
     </div>
+
+
 
     <!-- Render 3D model behind all other elements -->
     <canvas id = "renderCanvas" class = "renderer enableEvents">

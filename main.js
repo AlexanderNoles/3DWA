@@ -30,13 +30,16 @@ class ColorGUIHelper {
 }
 
 var scene, camera, clock, renderer, mixer, isWireframe, gui, composer, activePassIndex;
-var buttonClick;
+var buttonClick, explanationText;
 const actions = []; //Actions array triggered by play button
 
 function init(){
 
     //Load sound effects
     buttonClick = new Audio("ButtonClick.wav");
+
+    //Get explanation text
+    explanationText = document.getElementById("explanationText");
 
     //Setup switch model callbacks for buttons
     //Only do this on original init, otherwise things will be registered more than once
@@ -58,14 +61,16 @@ function init(){
     //Shader switching buttons
     //Needs to match the number of passes
     //If we have one post-proceess pass only look for first button
+    //
+    //We also set the explanation for this pass
     const passButton1 = document.getElementById("pass1");
     passButton1.addEventListener('click', function(){
-        togglePass(1);
+        togglePass(1, "Value is the sum of all colours of a given pixel (i.e., (r + g + b)/3). This is useful for determining the contrast of an image or determing procedural colours that work well together.");
     })
 
     const passButton2 = document.getElementById("pass2");
     passButton2.addEventListener('click', function(){
-        togglePass(2);
+        togglePass(2, "This Pixelation effect works by manipulating screen UVs. UVs are a type of coordinate system used for texture lookups, in this case the screen texture. By clamping UVs to cell centers we can get a single colour for a given cell or 'pixel'.");
     })
 
     //Animation control buttons
@@ -101,6 +106,9 @@ function load(modelName, playSound = true){
     {
         playButtonClick();
     }
+
+    //Reset explanantion text
+    explanationText.innerHTML = "";
 
     scene = new THREE.Scene();
 
@@ -220,7 +228,7 @@ function load(modelName, playSound = true){
 //Passes an index which is used to lookup into a passes array on the composer
 //Shader passes include all passes but the first (normal pass) and last (output pass)
 //Store the current active pass so we can disable it when setting a new one active
-function togglePass(newIndex)
+function togglePass(newIndex, passExplanation)
 {
     if(!isRealValue(composer)){
         return 0;
@@ -232,6 +240,9 @@ function togglePass(newIndex)
     if(activePassIndex != -1){
         //Deactivate current shader pass
         composer.passes[activePassIndex].enabled = false;
+
+        //Reset explanation text
+        explanationText.innerHTML = "";
     }
 
     //Activate new pass
@@ -244,6 +255,8 @@ function togglePass(newIndex)
             composer.passes[newIndex].enabled = true;
             //Set current active pass index
             activePassIndex = newIndex;
+
+            explanationText.innerHTML = passExplanation;
         }
         else
         {
