@@ -29,7 +29,7 @@
         </div>  
 
         The metalic texture of the hull and the emissive thrusters on the bottom are reflected in my model. My website includes an animation for each model and for the UFO it involves the opening of the dome.
-        Inside is a simplistic control room, a key piece of feedback I recieved (that I have yet to act upon) was to give this an animated element or some more interesting colours.
+        Inside is a simplistic control room, if I wanted to improve this model I could add some lights or other animated elements to this interior.
 
         <h3>Skull</h3>
         The Skull model draws inspiration from two primary sources, video games "Devil Daggers" and "Waltz of the Wizard". "Devil Daggers" uses a very pixelated and low poly style, one which has been mimicked in my model.
@@ -76,13 +76,12 @@
         <br>
         2. Pixelation. Used to demonstrate how you can manipulate UV coords to produce effects. In this case rounding UV coords to a cell center.
 
-
         <!-- DESIGN SECTION -->
         <h2 class="aboutPageSubTitles">Design</h2>
 
-        I used bootstrap to handle the layout of my html elements. A canvas is placed behind everything, set to fill the full resolution of the window, every other element is then placed on top of that. This unintentionally
+        I used Bootstrap to handle the layout of my html elements. A canvas, which threejs uses as a render target, is placed behind everything, set to fill the full resolution of the window. Every other element is then placed on top of that. This unintentionally
         created a usability issue as divs naturally blocked mouse events to the canvas, even if they were invisible. The issue was quickly fixed after it was revealed by user testing,
-        however, the solution the elements that need to handle mouse events be defined explicitly. 
+        however, any element that needs to handle mouse events now needs to be tagged explicitly.
         <br>        <br>
         In general, I utilize a minimalist approach to design. The only colour in the website is used to differentiate and highlight the types of buttons. My "About" link is placed at the bottom of the page, intentionally removed
         from the design (and placement) of the other buttons.
@@ -96,7 +95,7 @@
         <!-- INTERACTION SECTION -->
         <h2 class="aboutPageSubTitles">Interaction</h2>
 
-        To help with viewing the models, I added the "OrbitControls" addon for threejs. This provides a basic orbiting camera, controlled similarly to programs like Blender. 
+        To help with viewing the models, I utilize the "OrbitControls" addon for threejs. This provides a basic orbiting camera, controlled similarly to programs like Blender. 
         <br>        <br>
         My scene is lit using one directional light and one ambient light, both can have their colour and intensity changed by a user through a GUI. 
         There are buttons to play the animation for a given model, set the current model to wireframe mode and then buttons for toggling a variety of
@@ -104,6 +103,13 @@
 
         <!-- TESTING SECTION -->
         <h2 class="aboutPageSubTitles">Testing</h2>
+
+        Testing involved handing a participant (entirely people from my house) the website, before standing back and simply observing. I explicitly provided no assistance or explanation of the website or the module.
+        This was also typically conducted directly after doing testing for my Final Year Project, I do not believe this had any effect on the results but also believe it is worth noting regardless.
+        <br>
+        Testing primarily assisted in gauging the usability of the website (the previously discussed audio feedback additions were a result of this) but also had an effect on it's design. 
+        Originally I decided on a less minimalist design approach but a common point of criticism I recieved was the lack of focus on the models. I ended up focusing on removing visual clutter, getting rid of 
+        a site logo, some unnecesarry explanation text and indents on the buttons.
 
         <!-- Add some padding so the return button doesn't hide any text -->
         <div class="aboutPageEndPadding"></div>
