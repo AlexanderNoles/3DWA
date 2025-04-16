@@ -9,6 +9,7 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 
 import {GreyscaleShader} from '/shaders/Greyscale.js';
+import {FlatColourShader} from '/shaders/FlatColour.js';
 import {PixelationShader} from '/shaders/Pixelation.js';
 
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
@@ -65,12 +66,17 @@ function init(){
     //We also set the explanation for this pass
     const passButton1 = document.getElementById("pass1");
     passButton1.addEventListener('click', function(){
-        togglePass(1, "Value is the sum of all colours of a given pixel (i.e., (r + g + b)/3). This is useful for determining the contrast of an image or determing procedural colours that work well together.");
+        togglePass(1, "Value is the sum of all colours of a given pixel (i.e., (r + g + b)/3). This is useful for determining the contrast of an image or determing procedural colours that work well together. This effect works best on the 3rd model as it has prominent colours.");
     })
 
     const passButton2 = document.getElementById("pass2");
     passButton2.addEventListener('click', function(){
         togglePass(2, "This Pixelation effect works by manipulating screen UVs. UVs are a type of coordinate system used for texture lookups, in this case the screen texture. By clamping UVs to cell centers we can get a single colour for a given cell or 'pixel'.");
+    })
+
+    const passButton3 = document.getElementById("pass3");
+    passButton3.addEventListener('click', function(){
+        togglePass(3, "This effect replaces all colours with a singular colour (red), utilizing alpha as a mask. This is useful for visualizing how these shaders can affect the output, without the obfuscation created by lighting and depth.");
     })
 
     //Animation control buttons
@@ -215,6 +221,10 @@ function load(modelName, playSound = true){
     const pixelationPass = new ShaderPass(PixelationShader);
     pixelationPass.enabled = false;
     composer.addPass(pixelationPass);
+
+    const flatColourPass = new ShaderPass(FlatColourShader);
+    flatColourPass.enabled = false;
+    composer.addPass(flatColourPass);
 
     //Add an output pass
     const outputPass = new OutputPass();
