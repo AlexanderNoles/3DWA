@@ -3,6 +3,7 @@ const GreyscaleShader = {
     
     uniforms: {
         'tDiffuse': { value: null },
+        'intensity': { value: 0},
     },
 
     vertexShader: `
@@ -19,13 +20,14 @@ const GreyscaleShader = {
     fragmentShader:`
 
     uniform sampler2D tDiffuse;
+    uniform float intensity;
 
     varying vec2 vUv;
 
     void main() {
         vec4 col = texture2D(tDiffuse, vUv);
         float sum = (col.x + col.y + col.z) / 3.0;
-        gl_FragColor = vec4(sum, sum, sum, col.a);
+        gl_FragColor = mix(col, vec4(sum, sum, sum, col.a), intensity);
     }`
 };
 

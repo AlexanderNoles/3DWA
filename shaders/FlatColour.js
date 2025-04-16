@@ -3,6 +3,7 @@ const FlatColourShader = {
     
     uniforms: {
         'tDiffuse': { value: null },
+        'maskStrength' : {value: 10}
     },
 
     vertexShader: `
@@ -19,12 +20,14 @@ const FlatColourShader = {
     fragmentShader:`
 
     uniform sampler2D tDiffuse;
+    uniform float maskStrength;
 
     varying vec2 vUv;
 
     void main() {
         vec4 col = texture2D(tDiffuse, vUv);
-        float t = float((col.x + col.y + col.z) > 0.0000001);
+        float epsilon = 1.0 / (maskStrength * 100.0);
+        float t = float((col.x + col.y + col.z) > epsilon);
         gl_FragColor = vec4(t, 0, 0, 1);
     }`
 };

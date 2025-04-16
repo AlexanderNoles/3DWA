@@ -3,6 +3,7 @@ const PixelationShader = {
     
     uniforms: {
         'tDiffuse': { value: null },
+        'pixelsPerUnit': { value: 16 }
     },
 
     vertexShader: `
@@ -19,10 +20,11 @@ const PixelationShader = {
     fragmentShader:`
 
     uniform sampler2D tDiffuse;
+    uniform float pixelsPerUnit;
     varying vec2 vUv;
 
     void main() {
-        const float res = 0.00625;
+        float res = 0.1 / pixelsPerUnit;
         vec2 clampedUv = vec2(round(vUv.x / res), round(vUv.y / res)) * res;
 
         vec4 col = texture2D(tDiffuse, clampedUv);

@@ -30,7 +30,7 @@ class ColorGUIHelper {
     }
 }
 
-var scene, camera, clock, renderer, mixer, isWireframe, gui, composer, activePassIndex;
+var scene, camera, clock, renderer, mixer, isWireframe, gui, composer, shaderSettings, activePassIndex;
 var buttonClick, explanationText;
 const actions = []; //Actions array triggered by play button
 
@@ -69,15 +69,16 @@ function init(){
         togglePass(1, "Value is the sum of all colours of a given pixel (i.e., (r + g + b)/3). This is useful for determining the contrast of an image or determing procedural colours that work well together. This effect works best on the 3rd model as it has prominent colours.");
     })
 
-    const passButton2 = document.getElementById("pass2");
-    passButton2.addEventListener('click', function(){
-        togglePass(2, "This Pixelation effect works by manipulating screen UVs. UVs are a type of coordinate system used for texture lookups, in this case the screen texture. By clamping UVs to cell centers we can get a single colour for a given cell or 'pixel'.");
+    const passButton3 = document.getElementById("pass2");
+    passButton3.addEventListener('click', function(){
+        togglePass(2, "This effect replaces all colours with a singular colour (red), utilizing the sum of the colours as a mask. This is an example of an effect you can create with only colour data.");
     })
 
-    const passButton3 = document.getElementById("pass3");
-    passButton3.addEventListener('click', function(){
-        togglePass(3, "This effect replaces all colours with a singular colour (red), utilizing alpha as a mask. This is useful for visualizing how these shaders can affect the output, without the obfuscation created by lighting and depth.");
+    const passButton2 = document.getElementById("pass3");
+    passButton2.addEventListener('click', function(){
+        togglePass(3, "This Pixelation effect works by manipulating screen UVs. UVs are a type of coordinate system used for texture lookups, in this case the screen texture. By clamping UVs to cell centers we can get a single colour for a given cell or 'pixel'.");
     })
+
 
     //Animation control buttons
     const playButton = document.getElementById("playBtn");
@@ -212,19 +213,62 @@ function load(modelName, playSound = true){
     //Add default pass
     composer.addPass(new RenderPass(scene, camera));
 
+    //Create shader settings, for use with lil gui
+    const effectsFolder = gui.addFolder("Effects");
+
+    //Create an object to be edited by lil-gui
+    shaderSettings = {
+        greyscaleIntensity: 1,
+        maskStrength: 10,
+        pixelsPerUnit: 16
+    }
+
     //Add the effect passes
     //By default have them disabled
+
+    //Value effect pass
     const greyscalePass = new ShaderPass(GreyscaleShader);
+    greyscalePass.uniforms.intensity.value = 1;
     greyscalePass.enabled = false;
     composer.addPass(greyscalePass);
 
+    const greyscaleFolder = effectsFolder.addFolder("Value");
+    greyscaleFolder.add(shaderSettings, 'greyscaleIntensity', 0.0, 1.0, 0.01).name("Intensity").onChange(
+        value => {
+            greyscalePass.uniforms.intensity.value = value;
+        }
+    );
+    greyscaleFolder.open();
+    //
+
+    //Flat colour pass
+    const flatColourPass = new ShaderPass(FlatColourShader);
+    flatColourPass.uniforms.maskStrength.value = 10;
+    flatColourPass.enabled = false;
+    composer.addPass(flatColourPass);
+
+    const flatColourFolder = effectsFolder.addFolder("Flat Colour");
+    flatColourFolder.add(shaderSettings, 'maskStrength', 0.0, 10, 0.01).name("Masking").onChange(
+        value => {
+            flatColourPass.uniforms.maskStrength.value = value;
+        }
+    );
+    //
+    
+    //Pixelation Pass
     const pixelationPass = new ShaderPass(PixelationShader);
+    pixelationPass.uniforms.pixelsPerUnit.value = 16;
     pixelationPass.enabled = false;
     composer.addPass(pixelationPass);
 
-    const flatColourPass = new ShaderPass(FlatColourShader);
-    flatColourPass.enabled = false;
-    composer.addPass(flatColourPass);
+    const pixelationFolder = effectsFolder.addFolder("Pixelation");
+    pixelationFolder.add(shaderSettings, 'pixelsPerUnit', 1, 64, 1).name("Pixels Per Unit").onChange(
+        value => {
+            pixelationPass.uniforms.pixelsPerUnit.value = value;
+        }
+    );
+    //
+
 
     //Add an output pass
     const outputPass = new OutputPass();
