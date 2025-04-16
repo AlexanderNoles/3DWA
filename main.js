@@ -1,18 +1,18 @@
-import * as THREE from 'three';
-import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
-import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
-import GUI from 'three/examples/jsm/libs/lil-gui.module.min.js';
+import * as THREE from '/build/three.module.js';
+import { OrbitControls } from '/jsm/controls/OrbitControls.js';
+import { GLTFLoader } from '/jsm/loaders/GLTFLoader.js';
+import GUI from '/jsm/libs/lil-gui.module.min.js';
 
 //Post processing
-import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
-import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
-import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+import { EffectComposer } from '/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from '/jsm/postprocessing/RenderPass.js';
+import { ShaderPass } from '/jsm/postprocessing/ShaderPass.js';
 
 import {GreyscaleShader} from '/shaders/Greyscale.js';
 import {FlatColourShader} from '/shaders/FlatColour.js';
 import {PixelationShader} from '/shaders/Pixelation.js';
 
-import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { OutputPass } from '/jsm/postprocessing/OutputPass.js';
 //
 
 /* Copied (with bug fix modification) from https://threejs.org/manual/#en/lights*/
@@ -37,7 +37,7 @@ const actions = []; //Actions array triggered by play button
 function init(){
 
     //Load sound effects
-    buttonClick = new Audio("ButtonClick.wav");
+    buttonClick = new Audio("/public/ButtonClick.wav");
 
     //Get explanation text
     explanationText = document.getElementById("explanationText");
@@ -107,6 +107,8 @@ function init(){
 init();
 
 function load(modelName, playSound = true){
+
+    modelName = "/public/" + modelName;
 
     //Play button click sound, unless we have been explicitly told not too
     if (playSound)
